@@ -1,0 +1,281 @@
+{
+  "info": {
+    "_postman_id": "mylist-ott-api",
+    "name": "My List OTT API",
+    "description": "Complete collection for testing My List OTT API endpoints with sample requests",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health & Status",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/health",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["health"]
+            },
+            "description": "Check if API is running and healthy"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Add to List",
+      "item": [
+        {
+          "name": "Add Movie",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "user-id",
+                "value": "69387e5fd6cca376576bb22a",
+                "type": "text",
+                "description": "User ID from seed output"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"contentId\": \"69387e5fd6cca376576bb22f\",\n  \"contentType\": \"movie\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/mylist/add",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "mylist", "add"]
+            },
+            "description": "Add a movie to user's list. Replace contentId with actual movie ID from seed output"
+          },
+          "response": []
+        },
+        {
+          "name": "Add TV Show",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "user-id",
+                "value": "69387e5fd6cca376576bb22a",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"contentId\": \"69387e5fd6cca376576bb239\",\n  \"contentType\": \"tvshow\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/mylist/add",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "mylist", "add"]
+            },
+            "description": "Add a TV show to user's list"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Get List Items",
+      "item": [
+        {
+          "name": "Get All Items (Default Pagination)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "user-id",
+                "value": "69387e5fd6cca376576bb22a",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/api/mylist/items",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "mylist", "items"]
+            },
+            "description": "Get paginated list of items with default page size (20)"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Items with Custom Pagination",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "user-id",
+                "value": "69387e5fd6cca376576bb22a",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/api/mylist/items?page=1&pageSize=5",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "mylist", "items"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number (1-based)"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "5",
+                  "description": "Items per page (max: 100)"
+                }
+              ]
+            },
+            "description": "Get list items with custom pagination (page 1, 5 items per page)"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Second Page",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "user-id",
+                "value": "69387e5fd6cca376576bb22a",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/api/mylist/items?page=2&pageSize=5",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "mylist", "items"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "2"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "5"
+                }
+              ]
+            },
+            "description": "Get items from page 2"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Remove from List",
+      "item": [
+        {
+          "name": "Remove Movie",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "user-id",
+                "value": "69387e5fd6cca376576bb22a",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/api/mylist/remove/69387e5fd6cca376576bb22f",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "mylist", "remove", "69387e5fd6cca376576bb22f"]
+            },
+            "description": "Remove a movie from user's list. Replace the ID in URL with actual content ID"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "List Statistics",
+      "item": [
+        {
+          "name": "Get List Stats",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "user-id",
+                "value": "69387e5fd6cca376576bb22a",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/api/mylist/stats",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "mylist", "stats"]
+            },
+            "description": "Get statistics about user's list (total items and breakdown by type)"
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "userId",
+      "value": "69387e5fd6cca376576bb22a",
+      "type": "string",
+      "description": "User ID from database seed"
+    },
+    {
+      "key": "movieId",
+      "value": "69387e5fd6cca376576bb22f",
+      "type": "string",
+      "description": "Movie ID from database seed"
+    },
+    {
+      "key": "tvShowId",
+      "value": "69387e5fd6cca376576bb239",
+      "type": "string",
+      "description": "TV Show ID from database seed"
+    },
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    }
+  ]
+}
