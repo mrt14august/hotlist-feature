@@ -1,0 +1,145 @@
+{
+  "info": {
+    "_postman_id": "b1a4d9f0-0000-4a2a-9c6d-xxxxxxxxxxxx",
+    "name": "MyList API Collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Postman collection for MyList API. Replace collection variables `base_url`, `user_id`, and `content_id` with real values. Run `npm run seed` locally to obtain sample IDs."
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "user_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "content_id",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/health",
+              "host": ["{{base_url}}"],
+              "path": ["health"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Add To My List",
+      "item": [
+        {
+          "name": "Add Movie",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "user-id", "value": "{{user_id}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"contentId\": \"{{content_id}}\",\n  \"contentType\": \"movie\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/api/mylist/add", "host": ["{{base_url}}"], "path": ["api","mylist","add"] }
+          },
+          "response": []
+        },
+        {
+          "name": "Add TV Show",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "user-id", "value": "{{user_id}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"contentId\": \"{{content_id}}\",\n  \"contentType\": \"tvshow\"\n}" },
+            "url": { "raw": "{{base_url}}/api/mylist/add", "host": ["{{base_url}}"], "path": ["api","mylist","add"] }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Get My List Items",
+      "item": [
+        {
+          "name": "Get Items (default)",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "user-id", "value": "{{user_id}}" } ],
+            "url": { "raw": "{{base_url}}/api/mylist/items", "host": ["{{base_url}}"], "path": ["api","mylist","items"] }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Items (paginated)",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "user-id", "value": "{{user_id}}" } ],
+            "url": { "raw": "{{base_url}}/api/mylist/items?page=1&pageSize=2", "host": ["{{base_url}}"], "path": ["api","mylist","items"], "query": [ { "key": "page", "value": "1" }, { "key": "pageSize", "value": "2" } ] }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Remove From My List",
+      "item": [
+        {
+          "name": "Remove Item",
+          "request": {
+            "method": "DELETE",
+            "header": [ { "key": "user-id", "value": "{{user_id}}" } ],
+            "url": { "raw": "{{base_url}}/api/mylist/remove/{{content_id}}", "host": ["{{base_url}}"], "path": ["api","mylist","remove","{{content_id}}"] }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "My List Stats",
+      "item": [
+        {
+          "name": "Get Stats",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "user-id", "value": "{{user_id}}" } ],
+            "url": { "raw": "{{base_url}}/api/mylist/stats", "host": ["{{base_url}}"], "path": ["api","mylist","stats"] }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Seed (local)",
+      "item": [
+        {
+          "name": "Run Seed Script (local)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": { "raw": "Run locally: npm run seed", "host": [], "path": [] },
+            "description": "This is a helper item: run `npm run seed` in project root to populate sample users and content. The seed script prints IDs to use with the requests above."
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

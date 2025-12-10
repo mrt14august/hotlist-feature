@@ -17,6 +17,7 @@ A high-performance, production-ready backend API for the "My List" feature of an
 - [Deployment](#deployment)
 - [Troubleshooting](#troubleshooting)
 - [Design Decisions](#design-decisions)
+- [Benchmarking](#Benchmarking)
 
 ## Overview
 
@@ -1025,8 +1026,8 @@ Expected response:
 - TTL-based expiration (5 minutes) balances freshness and performance
 
 **Alternative Considered**: In-memory LRU cache
-- ❌ Not distributed (problematic with multiple server instances)
-- ❌ No persistence
+-  Not distributed (problematic with multiple server instances)
+-  No persistence
 
 ### 2. **Compound Index on userId + contentId**
 
@@ -1036,8 +1037,8 @@ Expected response:
 - Fast lookups for both "user has item" checks and pagination
 
 **Alternative Considered**: Application-level duplicate checking
-- ❌ Race condition risk in concurrent requests
-- ❌ Database transaction overhead
+- Race condition risk in concurrent requests
+- Database transaction overhead
 
 ### 3. **Content Enrichment via Parallel Queries**
 
@@ -1047,8 +1048,8 @@ Expected response:
 - Users don't need a second API call for content details
 
 **Alternative Considered**: Return only contentId
-- ❌ Poor UX - clients need separate content API calls
-- ❌ Inefficient for mobile apps
+- Poor UX - clients need separate content API calls
+- Inefficient for mobile apps
 
 ### 4. **Pagination with Skip-Limit**
 
@@ -1058,9 +1059,9 @@ Expected response:
 - Standard pattern for REST APIs
 
 **Alternative Considered**: Cursor-based pagination
-- ✅ Better for large datasets
-- ❌ More complex implementation
-- ❌ Most users have <1000 items in list
+- Better for large datasets
+- More complex implementation
+- Most users have <1000 items in list
 
 ### 5. **TypeScript for Type Safety**
 
@@ -1123,19 +1124,72 @@ MAX_PAGE_SIZE=100
 | `npm run lint` | Check code quality with ESLint |
 | `npm run format` | Format code with Prettier |
 
-## License
 
-ISC License - Feel free to use this project for personal or commercial purposes.
 
-## Support
 
-For issues, questions, or suggestions:
+## Benchmarking
+** Manual Ramp Script**
 
-1. Check the [Troubleshooting](#troubleshooting) section
-2. Review test cases in `src/__tests__/`
-3. Check logs in development mode: `npm run dev`
-4. Docker logs: `docker-compose logs app`
+A Node.js script for interactive, stepwise API benchmarking using autocannon. Lets you select concurrency, rate, and duration, and prints live stats every 5 seconds.
+
+### Prerequisites
+- Install dependencies:
+  ```bash
+  npm install autocannon minimist
+  ```
+
+### Complete Command Explanation
+
+#### Example Command
+```bash
+node bench/manual_ramp.js \
+  --url "http://localhost:3000/api/mylist/items?page=1&pageSize=2" \
+  --user-id 69398fe9a3d3897e0919c310 \
+  --start 100 \
+  --end 10000 \
+  --step 3000 \
+  --duration 20 \
+  --rate 10000
+```
+
+
+
+#### Parameters
+
+## example:
+ node bench/manual_ramp.js --url "http://localhost:3000/api/mylist/items?page=1&pageSize=2" --user-id 69398fe9a3d3897e0919c310 --start 100 --end 1000 --step 500 --duration 20 --rate 10000
+
+<!-- optimal according to my machine  -->
+ node bench/manual_ramp.js --url "http://localhost:3000/api/mylist/items?page=1&pageSize=2" --user-id 69398fe9a3d3897e0919c310 --start 100 --end 200 --step 25 --duration 15 --rate 1000
+
+
+- `--url`        : API endpoint to test (default: http://localhost:3000/api/mylist/items?page=1&pageSize=2)
+- `--user-id`    : Value for the `user-id` header (required by API)
+- `--start`      : Initial number of connection, e.g. 100
+- `--end`        : Maximum concurrency, e.g. 10000 (final number of connection after end   of every step up)
+- `--step`       : Step size for each ramp, e.g. 500 (increase number of tcp connection by 500 in this step)
+- `--duration`   : Duration (seconds) for each step, e.g. 20
+- `--rate`       : Requests per second cap (optional, e.g. 10000), i.e total should be ~ 20*10000 request per 20s
+
+### What you'll see
+- For each step, the script prints live stats every 5 seconds:
+  - Timestamp, average latency (ms), requests per second (RPS), error count
+- After each step, a full summary is printed (latency percentiles, RPS, errors, status codes)
+- You'll be prompted to continue to the next step or stop.
+
+### Example output
+```
+=== Running: 1000 connections for 20s ===
+[2025-12-10T21:30:00.000Z] Latency avg: 12.5ms, RPS: 9800, Errors: 0
+...
+Stat         Avg     Stdev  Max
+Latency (ms)  12.5    2.1    30
+RPS           9800    200    10000
+Errors        0       0      0
+2xx           9800    ...    ...
+4xx/5xx       0       ...    ...
+```
+
+If your API starts throttling or failing, you'll see increased latency, more errors, and more 429/5xx responses.
 
 ---
-
-**Built with ❤️ for high-performance OTT platforms**
