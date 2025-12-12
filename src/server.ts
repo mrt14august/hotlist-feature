@@ -42,10 +42,10 @@ app.use(errorHandler);
 const startServer = async () => {
   try {
     await connectDatabase();
-    console.log('✓ Database connected');
+    console.log('✓ Database connected  PORT:', process.env.MONGO_PORT || 27017);
 
     await connectRedis();
-    console.log('✓ Redis connected');
+    console.log('✓ Redis connected  PORT:', process.env.REDIS_PORT || 6379);
 
     app.listen(PORT, () => {
       console.log(`✓ Server running on http://localhost:${PORT}`);

@@ -13,7 +13,7 @@ beforeAll(async () => {
     const redis = getRedisClient();
     await redis.flushDb();
   } catch (error) {
-    console.warn('Redis clear error:', error);
+    console.error('Redis clear error:', error);
   }
 });
 
@@ -31,7 +31,7 @@ beforeEach(() => {
   const origConsole = {
     log: console.log,
     info: console.info,
-    warn: console.warn,
+    warn: console.error,
     error: console.error,
     debug: console.debug
   } as const;
@@ -49,7 +49,7 @@ beforeEach(() => {
   console.log = prefixer;
   console.info = prefixer;
   console.debug = prefixer;
-  console.warn = (...args: unknown[]) => origConsole.log(`[${testName}] WARN`, ...args);
+  console.error = (...args: unknown[]) => origConsole.log(`[${testName}] WARN`, ...args);
   console.error = (...args: unknown[]) => origConsole.log(`[${testName}] ERROR`, ...args);
 
   // mark start
@@ -65,7 +65,7 @@ afterEach(() => {
     // restore originals
     console.log = origConsole.log;
     console.info = origConsole.info;
-    console.warn = origConsole.warn;
+    console.error = origConsole.error;
     console.error = origConsole.error;
     console.debug = origConsole.debug;
 

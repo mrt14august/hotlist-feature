@@ -80,7 +80,7 @@ describe('MyList API Integration Tests', () => {
       const redis = getRedisClient();
       await redis.flushDb();
     } catch (error) {
-      console.warn('Redis flush error:', error);
+      console.error('Redis flush error:', error);
     }
 
     // Clear MyList
@@ -96,7 +96,7 @@ describe('MyList API Integration Tests', () => {
       const redis = getRedisClient();
       await redis.flushDb();
     } catch (error) {
-      console.warn('Redis flush error:', error);
+      console.error('Redis flush error:', error);
     }
   });
 

@@ -11,7 +11,7 @@ export const connectRedis = async (): Promise<void> => {
       host: process.env.REDIS_HOST || 'localhost',
       port: parseInt(process.env.REDIS_PORT || '6379'),
       reconnectStrategy: (retries) => {
-        if (retries > 10) {
+        if (retries > 5) {
           return new Error('Max retries exceeded');
         }
         return retries * 50;
