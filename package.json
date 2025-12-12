@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node dist/server.js",
     "dev": "ts-node-dev --respawn src/server.ts",
+    "dev-ts": "ts-node-dev --transpile-only --ignore-watch node_modules src/server.ts",
     "build": "tsc",
     "test": "jest --detectOpenHandles --forceExit --verbose",
     "test:watch": "jest --watch",
