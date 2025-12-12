@@ -1159,8 +1159,10 @@ node bench/manual_ramp.js \
 ## example:
  node bench/manual_ramp.js --url "http://localhost:3000/api/mylist/items?page=1&pageSize=2" --user-id 69398fe9a3d3897e0919c310 --start 100 --end 1000 --step 500 --duration 20 --rate 10000
 
-<!-- optimal according to my machine  -->
- node bench/manual_ramp.js --url "http://localhost:3000/api/mylist/items?page=1&pageSize=2" --user-id 69398fe9a3d3897e0919c310 --start 100 --end 200 --step 25 --duration 15 --rate 1000
+<!-- optimal according to my machine + add 2-4 ms nw Latency -->
+
+<!-- check for  user id first if it exist or not in DB  and in list-->
+ node bench/manual_ramp.js --url "http://localhost:3000/api/mylist/items?page=1&pageSize=2" --user-id 693c460da8383281b40facc3 --start 10 --end 50 --step 10 --duration 15 --rate 500
 
 
 - `--url`        : API endpoint to test (default: http://localhost:3000/api/mylist/items?page=1&pageSize=2)
@@ -1193,3 +1195,4 @@ Errors        0       0      0
 If your API starts throttling or failing, you'll see increased latency, more errors, and more 429/5xx responses.
 
 ---
+

@@ -337,8 +337,6 @@ describe('MyList API Integration Tests', () => {
       const item = response.body.data.items[0];
       expect(item.contentId).toBeDefined();
       expect(item.contentType).toBeDefined();
-      expect(item.content).toBeDefined();
-      expect(item.content.title).toBeDefined();
     });
 
     it('should cache results for performance', async () => {

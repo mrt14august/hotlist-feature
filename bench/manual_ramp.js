@@ -66,7 +66,6 @@ async function runStep(connections) {
 (async () => {
   for (let c = start; c <= end; c += step) {
     const cont = await runStep(c);
-    console.log("\n\n >>>>>@#$%^&&%^^$%$#$@#$%", cont)
     if (!cont) break;
   }
   rl.close();
